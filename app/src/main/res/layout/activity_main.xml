@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_background"
+    android:fadingEdge="none"
+    android:requiresFadingEdge="none"
+    android:scrollbarThumbHorizontal="@android:color/transparent"
+    android:scrollbarThumbVertical="@android:color/transparent"
+    app:layout_dodgeInsetEdges="none"
+    tools:context=".Introslides">
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/slideViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="138dp"
+        android:scrollbarThumbHorizontal="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <LinearLayout
+        android:id="@+id/docsLayout"
+        android:layout_width="100dp"
+        android:layout_height="133dp"
+        android:layout_marginStart="65dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slideViewPager" />
+
+    <Button
+        android:id="@+id/previous"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="135dp"
+
+        android:layout_height="66dp"
+        android:backgroundTint="#00FFFFFF"
+        android:elevation="0px"
+        android:text="Back"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.089"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.946" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="135dp"
+        android:layout_height="66dp"
+
+        android:backgroundTint="#00FFFFFF"
+        android:elevation="0dp"
+        android:text="Next"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.947"
+        style="?android:attr/borderlessButtonStyle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
