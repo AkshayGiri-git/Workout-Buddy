@@ -2,26 +2,19 @@ package com.example.workoutbuddy;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
@@ -33,11 +26,9 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.karumi.dexter.Dexter;
@@ -47,13 +38,33 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
     Button fab;
     GoogleMap mMap;
-    boolean a = false;
 
+    boolean a = false;
+    double distancea;
+    double distanceb;
+    double distance;
+    double odistance = 0;
+    double prevlat;
+    double prevlong;
+    double speed;
+    int amount;
+    double allspeed = 0;
+    double avgspeed;
+    Location location;
+    Button stats;
     SupportMapFragment mapFragment;
     GoogleMap googleM;
+    public static final String ak = "Akshay.g";
+    public static final String b = "Adithya.g";
+    public static final String c = "Jayashree.k";
+    public static final String d = "Giri.s";
     boolean isPermisionGranted;
     private int GPS_REQUEST_CODE = 9001;
     CountDownTimer hi;
@@ -66,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        fab = findViewById(R.id.button);
+        fab = findViewById(R.id.endrun);
         checkMyPermission();
         initmap();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -149,27 +160,70 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         polylineOptions.color(ContextCompat.getColor(getApplicationContext(),R.color.blue));
         polylineOptions.width(15);
 
+
+
                 hi = new CountDownTimer(1000000000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         mMap.setMyLocationEnabled(true);
                         client = new FusedLocationProviderClient(MapsActivity.this);
                         client.getLastLocation().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Location location = task.getResult();
-                            LatLng location2 = new LatLng(location.getLatitude(), location.getLongitude());
+                            if (task.isSuccessful()) {
+                                if(a == false){
+                                    amount = 1;
+                                }
+                                if(a == true){
+                                   prevlat = location.getLatitude();
+                                   prevlong = location.getLongitude();
+                                }
+                                location = task.getResult();
+                                if(a == true){
+                                    distancea = Math.abs(prevlat - location.getLatitude());
+                                    distanceb = Math.abs(prevlong - location.getLongitude());
+                                    distance = Math.sqrt(((distancea*69)*(distancea*69))+((distanceb*54.6)*(distanceb*54.6)));
+                                    allspeed = allspeed + distance;
+                                    odistance = odistance+distance;
+                                    if(amount %4 ==1){
+                                        if(amount == 1){
+                                            speed = allspeed*3600;
+                                            allspeed = 0;
+                                        }else {
+                                            speed = (allspeed * 3600) / 4;
+                                            allspeed = 0;
+                                        }
+                                    }
 
-                            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(location2, 18);
-                            mMap.animateCamera(cameraUpdate);
-                            mMap.moveCamera(cameraUpdate);
-                            polylineOptions.add(location2);
+                                    avgspeed = distance/amount;
+
+                                }
+                                stats = findViewById(R.id.stats);
+                                stats.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(MapsActivity.this,Resultpage.class);
+
+                                        intent.putExtra(ak,odistance);
+                                        intent.putExtra(b,speed);
+                                        intent.putExtra(c,avgspeed);
+                                        intent.putExtra(d,amount);
+                                        startActivity(intent);
+
+                                    }
+                                });
+                                LatLng location2 = new LatLng(location.getLatitude(), location.getLongitude());
+
+                                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(location2, 18);
+                                mMap.animateCamera(cameraUpdate);
+                                mMap.moveCamera(cameraUpdate);
 
 
-                                polyline = mMap.addPolyline(polylineOptions);
-
-
-                        }
-                    });
+                                    if (a == true) {
+                                        polylineOptions.add(location2);
+                                        polyline = mMap.addPolyline(polylineOptions);
+                                    }
+                                a = true;
+                            }
+                        });
                     }
 
                     @Override

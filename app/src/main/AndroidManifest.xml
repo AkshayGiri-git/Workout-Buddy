@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkoutBuddy">
+        <activity android:name=".Resultpage"></activity>
+        <activity android:name=".Restultpage" />
         <activity android:name=".MapsActivity">
             android:screenOrientation="portrait"
         </activity>
@@ -29,9 +31,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
