@@ -193,6 +193,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         client = new FusedLocationProviderClient(MapsActivity.this);
                         client.getLastLocation().addOnCompleteListener(task -> {
+                            location = task.getResult();
                             if (task.isSuccessful()) {
                                 if(a == false){
                                     amount = 1;
@@ -203,7 +204,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                    prevlong = location.getLongitude();
                                 }
-                                location = task.getResult();
+
                                 location2 = new LatLng(location.getLatitude(), location.getLongitude());
                                 if(a == true){
                                     distancea = Math.abs(prevlat - location.getLatitude());
@@ -280,7 +281,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(location2, 18);
-                                mMap.animateCamera(cameraUpdate);
+                                //mMap.animateCamera(cameraUpdate);
                                 mMap.moveCamera(cameraUpdate);
 
 
