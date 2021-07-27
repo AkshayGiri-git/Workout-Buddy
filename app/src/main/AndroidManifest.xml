@@ -11,13 +11,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher_background"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkoutBuddy">
-        <activity android:name=".Resultpage"></activity>
-        <activity android:name=".Restultpage" />
+        <activity android:name=".Endrun"></activity>
+        <activity android:name=".Resultpage" />
         <activity android:name=".MapsActivity">
             android:screenOrientation="portrait"
         </activity>

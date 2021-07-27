@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,11 +22,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
-import static com.example.workoutbuddy.MapsActivity.ak;
-import static com.example.workoutbuddy.MapsActivity.b;
-import static com.example.workoutbuddy.MapsActivity.c;
-import static com.example.workoutbuddy.MapsActivity.d;
 
 public class Resultpage extends AppCompatActivity {
     TextView distancec;
@@ -46,7 +42,20 @@ public class Resultpage extends AppCompatActivity {
     double allspeed = 0;
     double avgspeed;
     Location location;
-
+    public static final String resDistance = "retDistance";
+    public static final String resSpeed = "retSpeed";
+    public static final String resAvgSpeed = "retAvgSpeed";
+    public static final String resAmount = "retAmt";
+    @Override
+    public void onBackPressed() {
+        Intent retIntent = new Intent();
+        retIntent.putExtra(resDistance,odistance);
+        retIntent.putExtra(resSpeed,speed);
+        retIntent.putExtra(resAvgSpeed,avgspeed);
+        retIntent.putExtra(resAmount,amount);
+        setResult(Activity.RESULT_OK,retIntent);
+        finish();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +66,10 @@ public class Resultpage extends AppCompatActivity {
         avgspeedb = findViewById(R.id.avgspeed);
         Intent intent = getIntent();
 
-        double distancea = Math.round(intent.getDoubleExtra(ak, 0) * 100.0) / 100.0;
-        double avgspeeda = Math.round(intent.getDoubleExtra(c, 0) * 10.0) / 10.0;
-        double speeda = Math.round(intent.getDoubleExtra(b, 0) * 10.0) / 10.0;
-        int timea = intent.getIntExtra(d, 0);
+        double distancea = Math.round(intent.getDoubleExtra("distance", 0.0) * 100.0) / 100.0;
+        double avgspeeda = Math.round(intent.getDoubleExtra("avgspeed", 0.0) * 10.0) / 10.0;
+        double speeda = Math.round(intent.getDoubleExtra("speed", 0.0) * 10.0) / 10.0;
+        int timea = intent.getIntExtra("amt", 0);
 
         distancec.setText("distance : " + distancea + " miles");
         avgspeedb.setText("average speed : " + avgspeeda + " mph");
@@ -118,26 +127,16 @@ public class Resultpage extends AppCompatActivity {
                         }
                     }
 
-                    avgspeed = distance / amount;
+                    avgspeed = distance / (amount*3600);
                     amount++;
                 }
-                distancec.setText("distance : " + /*Math.round(*/odistance/*100.0)/100.0*/+ " miles");
-                avgspeedb.setText("average speed : " + /*Math.round(*/avgspeed/*100.0)/100.0*/ + " mph");
-                speedb.setText("speed : " + /*Math.round(*/speed/*100.0)/100.0*/ + " mph");
+                distancec.setText("distance : " + Math.round(odistance*100.0)/100.0 + " miles");
+                avgspeedb.setText("average speed : " + Math.round(avgspeed*100.0)/100.0 + " mph");
+                speedb.setText("speed : " + Math.round(speed*100.0)/100.0 + " mph");
                 timeb.setText("time : " + amount + "secs");
                 a = true;
 
-
-
-
-
-
-
-
-
             }
-
-
 
             @Override
             public void onFinish() {
